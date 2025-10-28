@@ -1,0 +1,13 @@
+[project]
+name = "quant-trader-test"
+version = "0.1.0"
+description = "Execution and backtest helpers for Binance spot-future arbitrage."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "binance-connector>=3.9,<4",
+    "binance-futures-connector>=4.0,<5",
+]
+
+[tool.uv]
+package = false
