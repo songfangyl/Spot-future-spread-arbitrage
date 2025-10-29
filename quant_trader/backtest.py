@@ -34,10 +34,6 @@ def _date_to_millis(day: date) -> int:
     return int(dt.timestamp() * 1000)
 
 
-def _ms_to_date(ms: int) -> date:
-    return datetime.fromtimestamp(ms / 1000, tz=timezone.utc).date()
-
-
 def _klines_to_daily_close(klines: List[List]) -> Dict[date, float]:
     prices: Dict[date, float] = {}
     for kline in klines:
