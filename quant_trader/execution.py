@@ -354,14 +354,13 @@ class SpreadExecutor:
 
     # ----------------------- price helpers ---------------------------------
     def _limit_price(self, side: str, bid: float, ask: float, tick_size: float) -> float:
-        mid = (bid + ask) / 2
         offset = self.config.price_offset_bps / 10_000.0
         if side == "BUY":
             price = min(ask * (1 + offset), ask * 1.001)
         else:
             price = max(bid * (1 - offset), bid * 0.999)
         price = _round_to_step(price, tick_size)
-        return max(price, tick_size)
+        return price
 
     def _future_book_ticker(self) -> Dict[str, Any]:
         """Return a normalized best bid/ask snapshot for the current future symbol."""

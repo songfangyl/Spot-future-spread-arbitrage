@@ -14,8 +14,8 @@ uv sync
 ### Task 1 – Execution Algorithm
 
 - `quant_trader/execution.py` implements a TWAP that spends a USD notional evenly across the chosen window.
-- Each slice looks up the latest bid/ask, converts the remaining USD budget (or unwind quantity) into BTC/contracts, and sends a market order (maker mode can be enabled by flipping `use_market_orders=False`).
-- Slices are scheduled off wall-clock time using the configured interval so the cadence stays stable even if API calls take longer than expected.
+- Each slice looks up the latest bid/ask, converts the remaining USD budget (or unwind quantity) into BTC/contracts, and submits the order. With the default `use_market_orders=True`, we fire a true market order so it fills right away. Flip `use_market_orders=False` to use a limit order priced just past the top of book (`ask * 1.001` when buying, `bid * 0.999` when selling) so it still fills immediately but with a small 0.1% cushion on price.
+- Each slice waits for its exact timeslot, so even if one request runs a bit slow the next order still fires on schedule.
 - At the end of every slice the script logs remaining exposure in both USD and BTC/contracts; any dust left below the exchange minimum is surfaced as a warning.
 
 #### Run It
